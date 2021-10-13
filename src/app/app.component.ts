@@ -32,7 +32,7 @@ export class AppComponent implements OnInit{
   file = '';
   messages: Array<any> = [];
   socket: any;
-  obj:any = {};
+  obj:any = new Object();
   locations: Array<any> = [];
   location:any = {};
   // SocketIOClient.Socket;
@@ -65,20 +65,16 @@ export class AppComponent implements OnInit{
   }
 
   passTheData(){
-    this.socket.on('receive_data', (data:any)=>
-    Object.assign(this.obj,data)
-  )
-  }
+    this.socket.on('receive_data', (data:any)=>{
+    Object.assign(this.obj,data)});
+}
 
   display_chart(){
-
-    //Object.assign(this.locations,this.obj.teams);
-    //console.log(this.locations);
-    if(this.locations != null){
-      Object.keys(this.locations).forEach((index)=>{
-        console.log(index)
-      })
-    }
+    Object.keys(this.obj).forEach(function(key){
+      if(key = "teams"){
+        console.log("find!");
+      }
+    })
   }
 
 
