@@ -29,7 +29,15 @@ io.on("connection", socket => {
       io.emit("receive_data", teamsObj));
   // to test to pass the number to
   socket.on("newNumber", data =>{
-      io.emit("msg", {num:data.num,location:data.location, timeStamp:getCurrentDate() });
+      for(let i = 0;i<teamsObj.teams.length;i++){
+          if(teamsObj.teams[i].text = data.location){
+              console.log("found"+teamsObj.teams[i]);
+              teamsObj.teams[i].count += data.num;
+              break;
+          }
+          console.log("Result:"+teamsObj.teams[i].count);
+      }
+      io.emit("msg", {num:data.num,location:data.location,obj: teamsObj, timeStamp:getCurrentDate() });
   });
 });
 

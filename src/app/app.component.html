@@ -6,7 +6,7 @@
       <th>Location</th>
       <th>Select</th>
     </tr>
-    <tr class="container" *ngFor="let location of obj.teams">
+    <tr class="container" *ngFor="let location of locations">
       <td>{{location.text}}</td>
       <td><button type="submit" class="btn btn-primary" (click)="onSelect(location)">Select</button></td>
     </tr>
@@ -20,6 +20,7 @@
 </div>
 
 <button (click)="sendMessage()" type="submit" class="btn btn-primary">Send </button>
+<button (click)="resetAll()" type="submit" class="btn btn-primary">Reset </button>
 
   <div style="display: block;">
     <canvas baseChart

@@ -32,7 +32,7 @@ export class AppComponent implements OnInit{
   file = '';
   messages: Array<any> = [];
   socket: any;
-  obj:any = new Object();
+  obj:any = {};
   locations: Array<any> = [];
   location:any = {};
   // SocketIOClient.Socket;
@@ -51,7 +51,6 @@ export class AppComponent implements OnInit{
     this.socket.emit('init',()=>
       console.log("initialize the object from app.js"))
 
-    this.display_chart();
   }
 
   onSelect(location:any) {
@@ -60,21 +59,25 @@ export class AppComponent implements OnInit{
 
   listen2Events() {
     this.socket.on('msg', (data:any) => {
+      this.display_chart(data.teams);
       this.messages.push(data);
     });
   }
 
   passTheData(){
     this.socket.on('receive_data', (data:any)=>{
-    Object.assign(this.obj,data)});
-}
+      Object.assign(this.obj,data)
+      this.display_chart(data.teams);
+    });
+  }
 
-  display_chart(){
-    Object.keys(this.obj).forEach(function(key){
-      if(key = "teams"){
-        console.log("find!");
-      }
-    })
+  display_chart(locations:Array<any>){
+    this.locations = locations
+    for(let i = 0;i<this.locations.length;i++){
+      this.pieChartLabels[i] = this.locations[i].text;
+      this.pieChartData[i] = this.locations[i].count;
+      console.log(this.pieChartData +"/"+this.pieChartLabels);
+    }
   }
 
 
@@ -83,6 +86,16 @@ export class AppComponent implements OnInit{
     this.socket.emit("newNumber", {num:this.numTicket, location:this.location.text });
     this.location = {};
     this.numTicket = 0;
+  }
+
+  resetAll(){
+    Object.keys(this.obj).forEach(key =>{
+      if(key = "teams"){ // not running
+        for(let i = 0; i<this.obj.teams.length;i++){
+          this.pieChartData[i] = 0;
+        }
+      }
+    })
   }
 
 
